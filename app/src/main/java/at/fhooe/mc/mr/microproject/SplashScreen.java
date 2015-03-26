@@ -33,7 +33,7 @@ public class SplashScreen extends Activity {
      * user interaction before hiding the system UI.
      */
     private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
-    private static final int SPLASH_TIME_OUT = 4500;
+    private static final int SPLASH_TIME_OUT = 1;
 
     /**
      * If set, will toggle the system UI visibility upon interaction. Otherwise,

@@ -1,14 +1,20 @@
 package at.fhooe.mc.mr.microproject;
 
-import at.fhooe.mc.mr.microproject.util.SystemUiHider;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.FrameLayout;
+
+import at.fhooe.mc.mr.microproject.util.SystemUiHider;
 
 
 /**
@@ -17,7 +23,7 @@ import android.view.View;
  *
  * @see SystemUiHider
  */
-public class GameBoard extends Activity {
+public class GameBoard extends Activity implements SurfaceHolder.Callback, View.OnTouchListener {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -46,11 +52,22 @@ public class GameBoard extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    // GAME
+
+    private SurfaceHolder mHolder;
+    private int mBoardHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_gameboard);
+
+
+        SurfaceView sv = (SurfaceView) findViewById(R.id.MySurfaceView);
+        sv.setOnTouchListener(this);
+        SurfaceHolder sh = sv.getHolder();
+        sh.addCallback(this);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -151,5 +168,46 @@ public class GameBoard extends Activity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        mHolder = holder;
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        // save height
+        mBoardHeight = height;
+
+        // make square
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(height, height);
+        SurfaceView sv = (SurfaceView) findViewById(R.id.MySurfaceView);
+        sv.setLayoutParams(params);
+
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return true;
+    }
+
+    public void drawBoard() {
+
+        Canvas c = mHolder.lockCanvas();
+        c.drawColor(Color.WHITE);
+        Paint p = new Paint();
+        p.setColor(Color.RED);
+        p.setStrokeCap(Paint.Cap.ROUND);
+        p.setStyle(Paint.Style.FILL);
+        c.drawCircle(0, 0, 6 / 24, p);
+        mHolder.unlockCanvasAndPost(c);
     }
 }
