@@ -4,10 +4,6 @@ import at.fhooe.mc.mr.microproject.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +17,7 @@ import android.view.View;
  *
  * @see SystemUiHider
  */
-public class SplashScreen extends Activity {
+public class GameMenu extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -32,8 +28,7 @@ public class SplashScreen extends Activity {
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
-    private static final int SPLASH_TIME_OUT = 4500;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     /**
      * If set, will toggle the system UI visibility upon interaction. Otherwise,
@@ -54,8 +49,8 @@ public class SplashScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_splashscreen);
+
+        setContentView(R.layout.activity_gamemenu);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -95,7 +90,7 @@ public class SplashScreen extends Activity {
                             controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
                         }
 
-                        if (visible) {
+                        if (visible && AUTO_HIDE) {
                             // Schedule a hide().
                             delayedHide(AUTO_HIDE_DELAY_MILLIS);
                         }
@@ -113,17 +108,6 @@ public class SplashScreen extends Activity {
                 }
             }
         });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        // this is a test comment
-        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-
-        Intent i = new Intent(this, GameMenu.class);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-        AlarmManager mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + SPLASH_TIME_OUT, pi);
     }
 
     @Override
@@ -133,7 +117,7 @@ public class SplashScreen extends Activity {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(50);
+        delayedHide(100);
     }
 
 

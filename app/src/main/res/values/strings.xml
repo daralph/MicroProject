@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MicroProject</string>
 
-    <string name="dummy_button">Lets Play</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_game_menu">GameMenu</string>
+    <string name="txtStartGame">StartGame</string>
+    <string name="dummy_button">Dummy Button</string>
 </resources>
