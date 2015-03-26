@@ -4,14 +4,11 @@ import at.fhooe.mc.mr.microproject.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 
 
 /**
@@ -20,7 +17,7 @@ import android.widget.Button;
  *
  * @see SystemUiHider
  */
-public class GameMenu extends Activity implements View.OnClickListener {
+public class GameSettings extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -43,7 +40,6 @@ public class GameMenu extends Activity implements View.OnClickListener {
      * The flags to pass to {@link SystemUiHider#getInstance}.
      */
     private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-    private static final String TAG = "GameMenu";
 
     /**
      * The instance of the {@link SystemUiHider} for this activity.
@@ -54,7 +50,7 @@ public class GameMenu extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_gamemenu);
+        setContentView(R.layout.activity_gamesettings);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -112,10 +108,6 @@ public class GameMenu extends Activity implements View.OnClickListener {
                 }
             }
         });
-
-
-        Button b = (Button)findViewById(R.id.btnStartGame);
-        b.setOnClickListener(this);
     }
 
     @Override
@@ -159,18 +151,5 @@ public class GameMenu extends Activity implements View.OnClickListener {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.btnStartGame:
-                Intent i = new Intent(this, GameBoard.class);
-                //Intent i = new Intent(this, GameSettings.class);
-                startActivity(i);
-                break;
-            default: Log.e(TAG, "unknown onClick ID encountered ...");
-        }
     }
 }

@@ -26,6 +26,20 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        <activity
+            android:name=".GameSettings"
+            android:configChanges="keyboardHidden|screenSize"
+            android:label="@string/title_activity_game_settings"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".GameBoard"
+            android:configChanges="keyboardHidden|screenSize"
+            android:label="@string/title_activity_game_board"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
     </application>
 
 </manifest>

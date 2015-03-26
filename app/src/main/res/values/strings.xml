@@ -6,4 +6,9 @@
     <string name="title_activity_game_menu">GameMenu</string>
     <string name="txtStartGame">StartGame</string>
     <string name="dummy_button">Dummy Button</string>
+    <string name="btnStartGame">Start Game</string>
+
+    <string name="title_activity_game_settings">GameSettings</string>
+
+    <string name="title_activity_game_board">GameBoard</string>
 </resources>
