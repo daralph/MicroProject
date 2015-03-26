@@ -4,11 +4,13 @@ import at.fhooe.mc.mr.microproject.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 
 
 /**
@@ -28,7 +30,7 @@ public class SplashScreen extends Activity {
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
 
     /**
      * If set, will toggle the system UI visibility upon interaction. Otherwise,
@@ -49,7 +51,7 @@ public class SplashScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+       // this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splashscreen);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
@@ -113,7 +115,7 @@ public class SplashScreen extends Activity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         // this is a test comment
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
