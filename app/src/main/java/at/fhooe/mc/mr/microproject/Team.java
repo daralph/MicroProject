@@ -16,4 +16,10 @@ public class Team {
     int baseToken;
     Path path;
     Token[] token;
+
+    public Team(int id) {
+        this.id = id;
+        path = new Path(id);
+    }
+
 }

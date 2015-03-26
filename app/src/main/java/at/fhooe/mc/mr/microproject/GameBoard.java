@@ -196,18 +196,34 @@ public class GameBoard extends Activity implements SurfaceHolder.Callback, View.
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        drawBoard();
         return true;
     }
 
     public void drawBoard() {
 
+
         Canvas c = mHolder.lockCanvas();
         c.drawColor(Color.WHITE);
         Paint p = new Paint();
-        p.setColor(Color.RED);
+        p.setColor(Color.BLUE);
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setStyle(Paint.Style.FILL);
-        c.drawCircle(0, 0, 6 / 24, p);
+
+        Team team = new Team(4);
+
+
+
+
+        float rad = mBoardHeight/22;
+
+        for(int i = 0; i < 44; i++) {
+            int x = team.path.elements[i].x;
+            int y = team.path.elements[i].y;
+
+            c.drawCircle((rad*2*x)+rad,(rad*2*y)+rad,rad, p);
+        }
+
         mHolder.unlockCanvasAndPost(c);
     }
 }
