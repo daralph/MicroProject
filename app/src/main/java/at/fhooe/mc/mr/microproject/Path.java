@@ -8,29 +8,36 @@ import android.util.Log;
  */
 public class Path {
     Point[] elements;
+    int teamId = Integer.MIN_VALUE;
 
     public Path(int teamId) {
-        elements = new Point[44];
+        this.elements = new Point[44];
+        this.teamId = teamId;
 
         switch (teamId) {
-            case 1:
+            case 0:
                 makePathTeam1();
                 break;
-            case 2:
+            case 1:
                 makePathTeam2();
                 break;
-            case 3:
+            case 2:
                 makePathTeam3();
                 break;
-            case 4:
+            case 3:
                 makePathTeam4();
                 break;
             default:
-                Log.e("PATH", "Unknown TeamID encountered ...");
+                Log.e("PATH", "Unknown TeamID encountered ..." + teamId);
         }
     }
 
-
+    public Point getPathPoint(int aValue) {
+        if(elements.length>=aValue)
+            return elements[aValue];
+        else
+            return new Point(0,0);
+    }
     private void makePathTeam1() {
 
         for (int i = 0; i < 44; i++)

@@ -29,9 +29,16 @@
         android:layout_height="fill_parent">
 
         <SurfaceView
-            android:layout_width="fill_parent"
+            android:layout_width="536dp"
             android:layout_height="fill_parent"
             android:id="@+id/MySurfaceView" />
+
+        <Button
+            android:layout_width="56dp"
+            android:layout_height="167dp"
+            android:text="Go"
+            android:id="@+id/btnGo"
+            android:layout_gravity="right|top" />
 
     </FrameLayout>
 

@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import at.fhooe.mc.mr.microproject.util.SystemUiHider;
@@ -23,7 +24,7 @@ import at.fhooe.mc.mr.microproject.util.SystemUiHider;
  *
  * @see SystemUiHider
  */
-public class GameBoard extends Activity implements SurfaceHolder.Callback, View.OnTouchListener {
+public class GameBoard extends Activity implements SurfaceHolder.Callback, View.OnTouchListener, View.OnClickListener {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -53,7 +54,7 @@ public class GameBoard extends Activity implements SurfaceHolder.Callback, View.
     private SystemUiHider mSystemUiHider;
 
     // GAME
-
+    private Team[] teams;
     private SurfaceHolder mHolder;
     private int mBoardHeight;
 
@@ -63,6 +64,10 @@ public class GameBoard extends Activity implements SurfaceHolder.Callback, View.
 
         setContentView(R.layout.activity_gameboard);
 
+
+        Button b = null;
+        b = (Button)findViewById(R.id.btnGo);
+        b.setOnClickListener(this);
 
         SurfaceView sv = (SurfaceView) findViewById(R.id.MySurfaceView);
         sv.setOnTouchListener(this);
@@ -187,6 +192,7 @@ public class GameBoard extends Activity implements SurfaceHolder.Callback, View.
         sv.setLayoutParams(params);
 
 
+
     }
 
     @Override
@@ -196,34 +202,212 @@ public class GameBoard extends Activity implements SurfaceHolder.Callback, View.
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+       return true;
+    }
+
+    public void initGame() throws InterruptedException {
+        teams = new Team[4];
+        teams[0] = new Team(0, "Team 1", Color.RED);
+        teams[1] = new Team(1, "Team 2", Color.BLUE);
+        teams[2] = new Team(2, "Team 3", Color.YELLOW);
+        teams[3] = new Team(3, "Team 4", Color.GREEN);
+
         drawBoard();
-        return true;
+
+        Thread.sleep(2500);
+        teams[0].setTokenToStart();
+        drawBoard();
+        int dices = (int) Math.random() * 6 + 1;
+
+        for (int i = 0; i < 9; i++) {
+
+               teams[0].token[0].goFurther();
+               Thread.sleep(1000);
+            drawBoard();
+        } // for
     }
 
     public void drawBoard() {
 
-
         Canvas c = mHolder.lockCanvas();
         c.drawColor(Color.WHITE);
+        //set paint
         Paint p = new Paint();
-        p.setColor(Color.BLUE);
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setStyle(Paint.Style.FILL);
 
-        Team team = new Team(4);
+        float rad = mBoardHeight / 22;
+        float durchm = rad * 2;
+
+        // first draw base and finish of teams
+        p.setColor(teams[0].getColor());
+        c.drawCircle((durchm * 0) + rad, (durchm * 0) + rad, rad, p);
+        c.drawCircle((durchm * 0) + rad, (durchm * 1) + rad, rad, p);
+        c.drawCircle((durchm * 1) + rad, (durchm * 0) + rad, rad, p);
+        c.drawCircle((durchm * 1) + rad, (durchm * 1) + rad, rad, p);
+        //finish
+        c.drawCircle((durchm * 1) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 2) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 3) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 5) + rad, rad, p);
+        //start
+        c.drawCircle((durchm * 0) + rad, (durchm * 4) + rad, rad, p);
+
+
+        p.setColor(teams[1].getColor());
+        c.drawCircle((durchm * 9) + rad, (durchm * 0) + rad, rad, p);
+        c.drawCircle((durchm * 9) + rad, (durchm * 1) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 0) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 1) + rad, rad, p);
+        //finish
+        c.drawCircle((durchm * 5) + rad, (durchm * 1) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 2) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 3) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 4) + rad, rad, p);
+        //start
+        c.drawCircle((durchm * 6) + rad, (durchm * 0) + rad, rad, p);
+
+
+        p.setColor(teams[2].getColor());
+        c.drawCircle((durchm * 9) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 9) + rad, (durchm * 10) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 10) + rad, rad, p);
+        //finish
+        c.drawCircle((durchm * 6) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 7) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 8) + rad, (durchm * 5) + rad, rad, p);
+        c.drawCircle((durchm * 9) + rad, (durchm * 5) + rad, rad, p);
+        //start
+        c.drawCircle((durchm * 10) + rad, (durchm * 6) + rad, rad, p);
 
 
 
+        p.setColor(teams[3].getColor());
+        c.drawCircle((durchm * 0) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 0) + rad, (durchm * 10) + rad, rad, p);
+        c.drawCircle((durchm * 1) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 1) + rad, (durchm * 10) + rad, rad, p);
+        //finish
+        c.drawCircle((durchm * 5) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 7) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 8) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 9) + rad, rad, p);
+        //start
+        c.drawCircle((durchm * 4) + rad, (durchm * 10) + rad, rad, p);
 
-        float rad = mBoardHeight/22;
 
-        for(int i = 0; i < 44; i++) {
-            int x = team.path.elements[i].x;
-            int y = team.path.elements[i].y;
+        p.setColor(Color.BLACK);
+        //draw normal items - start at first team
+        c.drawCircle((durchm * 1) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 2) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 3) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 3) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 2) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 1) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 0) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 0) + rad, rad, p);
 
-            c.drawCircle((rad*2*x)+rad,(rad*2*y)+rad,rad, p);
-        }
+        //draw normal items - start at second team
+        c.drawCircle((durchm * 6) + rad, (durchm * 1) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 2) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 3) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 7) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 8) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 9) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 4) + rad, rad, p);
+        c.drawCircle((durchm * 10) + rad, (durchm * 5) + rad, rad, p);
 
+        //draw normal items - start at third team
+        c.drawCircle((durchm * 9) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 8) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 7) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 7) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 8) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 6) + rad, (durchm * 10) + rad, rad, p);
+        c.drawCircle((durchm * 5) + rad, (durchm * 10) + rad, rad, p);
+
+        //draw normal items - start at fourth team
+        c.drawCircle((durchm * 4) + rad, (durchm * 9) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 8) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 7) + rad, rad, p);
+        c.drawCircle((durchm * 4) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 3) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 2) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 1) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 0) + rad, (durchm * 6) + rad, rad, p);
+        c.drawCircle((durchm * 0) + rad, (durchm * 5) + rad, rad, p);
+
+        p.setColor(Color.WHITE);
+        //draw normal items - start at first team
+        c.drawCircle((durchm * 1) + rad + 1, (durchm * 4) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 2) + rad + 1, (durchm * 4) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 3) + rad + 1, (durchm * 4) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 4) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 3) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 2) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 1) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 0) + rad + 1, rad - 3, p);
+        c.drawCircle((durchm * 5) + rad + 1, (durchm * 0) + rad + 1, rad - 3, p);
+
+        //draw normal items - start at second team
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 1) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 2) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 3) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 4) + rad, rad - 3, p);
+        c.drawCircle((durchm * 7) + rad + 1, (durchm * 4) + rad, rad - 3, p);
+        c.drawCircle((durchm * 8) + rad + 1, (durchm * 4) + rad, rad - 3, p);
+        c.drawCircle((durchm * 9) + rad + 1, (durchm * 4) + rad, rad - 3, p);
+        c.drawCircle((durchm * 10) + rad + 1, (durchm * 4) + rad, rad - 3, p);
+        c.drawCircle((durchm * 10) + rad + 1, (durchm * 5) + rad, rad - 3, p);
+
+        //draw normal items - start at third team
+        c.drawCircle((durchm * 9) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 8) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 7) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 7) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 8) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 9) + rad, rad - 3, p);
+        c.drawCircle((durchm * 6) + rad + 1, (durchm * 10) + rad, rad - 3, p);
+        c.drawCircle((durchm * 5) + rad + 1, (durchm * 10) + rad, rad - 3, p);
+
+        //draw normal items - start at fourth team
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 9) + rad, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 8) + rad, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 7) + rad, rad - 3, p);
+        c.drawCircle((durchm * 4) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 3) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 2) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 1) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 0) + rad + 1, (durchm * 6) + rad, rad - 3, p);
+        c.drawCircle((durchm * 0) + rad + 1, (durchm * 5) + rad, rad - 3, p);
+
+        //draw tokens
+        p.setColor(Color.MAGENTA);
+        teams[0].drawTokens(c, p, rad);
+        p.setColor(Color.LTGRAY);
+        teams[1].drawTokens(c, p, rad);
+        p.setColor(Color.CYAN);
+        teams[2].drawTokens(c, p, rad);
+        p.setColor(Color.argb(100, 33, 22, 11));
+        teams[3].drawTokens(c, p, rad);
+
+        // draw
         mHolder.unlockCanvasAndPost(c);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        try {
+            initGame();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

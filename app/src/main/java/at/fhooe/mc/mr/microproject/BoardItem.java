@@ -26,8 +26,15 @@ public class BoardItem {
     }
 
     private Type type;
-    private Team team;
+    private int team;
     private boolean occupied;
     private Token occupiedBy;
     private Point point;
+
+    public BoardItem(int aTeam, Type aType, Point aPoint) {
+        this.team = aTeam;
+        this.type = aType;
+        this.point = aPoint;
+    }
 }
+
